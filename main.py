@@ -24,7 +24,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/blood_pressure')
+@app.route('/blood_pressure', methods=['GET', 'POST'])
 def blood_pressure():
     ROWS_PER_PAGE = 10;
 
@@ -38,15 +38,51 @@ def blood_pressure():
             pass
     active_page = max(1, min(active_page, total_pages))
 
-    user = User.query.first_or_404()
-    rows = BloodPressure.query.with_parent(user)[0:ROWS_PER_PAGE]
-    return render_template(
-        'blood_pressure.html',
-        header=('Date', 'SYS', 'DIA'),
-        rows=[(row.id, row.date.strftime('%A, %d. %B %Y'), row.systolic, row.diastolic) for row in rows],
-        total_pages=total_pages,
-        active_page=active_page,
-    )
+    if request.method == 'POST':
+        try:
+            date = datetime.date.fromisoformat(request.form['date'])
+            hour = int(request.form['hour'])
+            minute = int(request.form['minute'])
+            systolic = int(request.form['systolic'])
+            diastolic = int(request.form['diastolic'])
+
+            measurement = BloodPressure(
+                user=User.query.first(),  # TODO
+                date=datetime.datetime(date.year, date.month, date.day, hour, minute),
+                systolic=systolic,
+                diastolic=diastolic,
+            )
+            db.session.add(measurement)
+            db.session.commit()
+
+            app.logger.info('Added new BloodPressure %s', measurement)
+
+            return redirect(url_for('blood_pressure'))
+        except ValueError as e:
+            app.logger.error('Invalid form data: %s', e)
+            return redirect(url_for(
+                'blood_pressure',
+                page=active_page,
+                message="""Something went wrong when adding the new measurement. Please make sure all fields are set to valid values and try again."""
+            ))
+    else:
+        message = ''
+        if 'message' in request.args:
+            try:
+                message = str(request.args['message'])
+            except:
+                pass
+
+        user = User.query.first_or_404()
+        rows = BloodPressure.query.with_parent(user)[0:ROWS_PER_PAGE]
+        return render_template(
+            'blood_pressure.html',
+            header=('Date', 'SYS', 'DIA'),
+            rows=[(row.id, row.date.strftime('%A, %d. %B %Y'), row.systolic, row.diastolic) for row in rows],
+            total_pages=total_pages,
+            active_page=active_page,
+            message=message,
+        )
 
 
 def send_csv(name, headers, rows):
