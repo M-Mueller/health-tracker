@@ -15,13 +15,10 @@ db = SQLAlchemy(app)
 from models import User, BloodPressure
 
 
-def format_date(date):
-    return datetime.date.fromisoformat(date).strftime('%A, %d. %B %Y')
-
-
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # there is nothing at the index page yet
+    return redirect(url_for('blood_pressure'))
 
 
 @app.route('/blood_pressure', methods=['GET', 'POST'])
@@ -83,6 +80,15 @@ def blood_pressure():
             active_page=active_page,
             message=message,
         )
+
+
+@app.route('/blood_pressure/csv')
+def blood_pressure_csv():
+    rows = [
+        (row.date.isoformat(), row.systolic, row.diastolic)
+        for row in BloodPressure.query.all()
+    ]
+    return send_csv('blood_pressure', ['date', 'systolic', 'diastolic'], rows)
 
 
 def send_csv(name, headers, rows):

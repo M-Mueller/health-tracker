@@ -17,6 +17,9 @@
           {{ alert.danger(message) }}
           {{ table.table(header, rows) }}
           {{ pagination.pagination(total_pages, active_page) }}
+          {% if rows %}
+              {{ utils.button_download_csv("blood_pressure/csv") }}
+          {% endif %}
       </div>
       <div id="modal" class="modal" onOpenEnd="resetDialogFields()">
           <form method="post">
