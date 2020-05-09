@@ -6,7 +6,7 @@ This first column is not considered by the header (i.e. header has one value
 less than the individual rows).
 #}
 {% macro table(header, rows) -%}
-<table class="table table-hover">
+<table class="highlight">
   <thead>
       {% for column in header %}
       <th scope="col">{{column}}</th>

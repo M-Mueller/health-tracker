@@ -1,29 +1,43 @@
 {% macro pagination(total, active) -%}
 {% if total > 1 %}
-<ul class="pagination justify-content-center">
-    <li class="page-item {{ 'disabled' if active == 1 }}"><a class="page-link" href="#">Previous</a></li>
+<ul class="pagination center-align">
+    <li class="{{ 'disabled' if active == 1 else 'waves-effect' }}">
+        <a {{ 'href=?page={}'.format(active - 1) if active != 1 }}>
+            <i class="material-icons">chevron_left</i>
+        </a>
+    </li>
     {% if total > 10 %}
         {% if active > 2 %}
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="waves-effect"><a href="?page=1">1</a></li>
         {% endif %}
         {% if active > 3 %}
-            <li class="page-item" disabled><a class="page-link" tabindex=-1 href="#">...</a></li>
+            <li class="disabled"><a>...</a></li>
         {% endif %}
         {% for i in range([active - 1, 1]|max, [active + 2, total + 1]|min) %}
-            <li class="page-item {{ 'active' if i == active }}"><a class="page-link" href="#">{{i}}</a></li>
+            <li class="{{ 'active' if i == active else 'waves-effect' }}">
+                <a href="?page={{i}}">{{i}}</a>
+            </li>
         {% endfor %}
         {% if active < total - 2 %}
-            <li class="page-item" disabled><a class="page-link" tabindex=-1 href="#">...</a></li>
+            <li class="disabled"><a>...</a></li>
         {% endif %}
         {% if active < total - 1 %}
-            <li class="page-item"><a class="page-link" href="#">{{total}}</a></li>
+        <li class="waves-effect">
+            <a href="?page={{total}}">{{total}}</a>
+        </li>
         {% endif %}
     {% else %}
         {% for i in range(1, total + 1) %}
-            <li class="page-item {{ 'active' if i == active }}"><a class="page-link " href="#">{{i}}</a></li>
+            <li class="waves-effect {{ 'active' if i == active }}">
+                <a href="?page={{i}}">{{i}}</a>
+            </li>
         {% endfor %}
     {% endif %}
-    <li class="page-item {{ 'disabled' if active == total }}"><a class="page-link" href="#">Next</a></li>
+    <li class="{{ 'disabled' if active == total else 'waves-effect' }}">
+        <a {{ 'href=?page={}'.format(active + 1) if active != total }}>
+            <i class="material-icons">chevron_right</i>
+        </a>
+    </li>
 </ul>
 {% endif %}
 {%- endmacro %}

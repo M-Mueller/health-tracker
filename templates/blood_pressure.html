@@ -8,12 +8,25 @@
 <html>
   {% include "header.html" %}
   <body>
-      {{ navbar.navbar('blood_pressure') }}
-      <div class="p-4">
+      {% call navbar.navbar('Blood Pressure') %}
+      <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal modal-trigger" href="#modal1">
+          <i class="material-icons">add</i>
+      </a>
+      {% endcall %}
+      <div class="container">
           {{ alert.danger(failed_message) }}
           {{ table.table(header, rows) }}
           {{ pagination.pagination(total_pages, active_page) }}
           {% include "footer.html" %}
+      </div>
+      <div id="modal1" class="modal">
+          <div class="modal-content">
+              <h4>Modal Header</h4>
+              <p>A bunch of text</p>
+          </div>
+          <div class="modal-footer">
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+          </div>
       </div>
   </body>
 </html>

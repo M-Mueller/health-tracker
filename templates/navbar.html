@@ -1,20 +1,40 @@
-{% macro navbar(active) -%}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">
-        <svg id="i-heartbeat" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-            <path d="M 3.6667361,16 H 10.86114 L 13.944456,21.621632 18.055544,10.378368 21.13886,16 h 7.194404" />
-            <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
-        </svg>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div id="navbarSupportedContent" class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item {{ 'active' if active == 'blood_pressure' }}">
-                <a class="nav-link" href="/blood_pressure">Blood Pressure</a>
-            </li>
+{% macro navbar(title='') -%}
+<nav class="nav-extended">
+    <div class="nav-wrapper">
+        <a class="brand-logo center" href="/">
+            <svg style="vertical-align: center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M 3.6667361,16 H 10.86114 L 13.944456,21.621632 18.055544,10.378368 21.13886,16 h 7.194404" />
+                <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
+            </svg>
+        </a>
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            {{ items() }}
         </ul>
     </div>
+    {% if title %}
+    <div class="nav-content">
+        <span class="nav-title">Blood Pressure</span>
+        {{ caller() }}
+    </div>
+    {% endif %}
+    <div class="hide-on-med-and-up" style="margin-top: 2rem"/>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+    </script>
 </nav>
+
+<ul class="sidenav" id="mobile-nav">
+    {{ items() }}
+</ul>
 {%- endmacro %}
+
+{% macro items() -%}
+<li>
+    <a href="/blood_pressure">Blood Pressure</a>
+</li>
+{%- endmacro %}
+
