@@ -1,0 +1,25 @@
+{# Render a table with the given header and rows.
+The header should be a list of strings.
+The rows should be a list of a tuple of columns.
+The first column is expected to be the primary key used to delete the column.
+This first column is not considered by the header (i.e. header has one value
+less than the individual rows).
+#}
+{% macro table(header, rows) -%}
+<table class="table table-hover">
+  <thead>
+      {% for column in header %}
+      <th scope="col">{{column}}</th>
+      {% endfor %}
+  </thead>
+  <tbody>
+      {% for columns in rows %}
+      <tr index="{{columns[0]}}">
+          {% for column in columns[1:] %}
+              <td>{{column}}</td>
+          {% endfor %}
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+{%- endmacro %}

@@ -1,0 +1,19 @@
+{% import 'navbar.html' as navbar %}
+{% import 'alert.html' as alert %}
+{% import 'utils.html' as utils %}
+{% import 'table.html' as table %}
+{% import 'pagination.html' as pagination %}
+
+<!DOCTYPE html>
+<html>
+  {% include "header.html" %}
+  <body>
+      {{ navbar.navbar('blood_pressure') }}
+      <div class="p-4">
+          {{ alert.danger(failed_message) }}
+          {{ table.table(header, rows) }}
+          {{ pagination.pagination(total_pages, active_page) }}
+          {% include "footer.html" %}
+      </div>
+  </body>
+</html>

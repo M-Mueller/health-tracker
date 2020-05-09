@@ -1,0 +1,11 @@
+{% macro button_delete_last(path, date) -%}
+<form action="{{path}}">
+    <button type="submit" class="btn btn-link" onclick="return confirm('Are you sure you want to delete the value for {{date}}?');">Delete latest entry</button>
+</form>
+{%- endmacro %}
+
+{% macro button_download_csv(path) -%}
+<form action="{{path}}">
+    <button type="submit" class="btn btn-link">Download CSV</button>
+</form>
+{%- endmacro %}
