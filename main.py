@@ -124,7 +124,7 @@ def blood_pressure(key):
             app.logger.info('Could not find BloodPressure with id %s for deletion', key)
             return make_response("Entry not found", 404)
     else:
-        rows = BloodPressure.query.with_parent(current_user)[0:ROWS_PER_PAGE]
+        rows = BloodPressure.query.with_parent(current_user).order_by(BloodPressure.date.desc())[0:ROWS_PER_PAGE]
         return render_template(
             'blood_pressure.html',
             header=('Date', 'SYS', 'DIA'),
@@ -140,7 +140,7 @@ def blood_pressure(key):
 def blood_pressure_csv():
     rows = [
         (row.date.isoformat(), row.systolic, row.diastolic)
-        for row in BloodPressure.query.filter_by(user=current_user)
+        for row in BloodPressure.query.filter_by(user=current_user).order_by(BloodPressure.date)
     ]
     return send_csv('blood_pressure', ['date', 'systolic', 'diastolic'], rows)
 
