@@ -10,9 +10,13 @@
       <div class="container">
           <div class="card" style="margin-top: 5rem">
               <form method="post" class="card-content row">
-                  {% if message %}
-                      <p class="red-text col s12">{{message}}</p>
-                  {% endif %}
+                  {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                          {% for message in messages %}
+                          <p class="red-text col s12">{{message}}</p>
+                          {% endfor %}
+                      {% endif %}
+                  {% endwith %}
                   <div class="input-field col s12">
                       <input name="username" type="text" class="validate">
                       <label>Username</label>

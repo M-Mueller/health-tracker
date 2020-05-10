@@ -14,7 +14,11 @@
       </a>
       {% endcall %}
       <div class="container">
-          {{ alert.danger(message) }}
+          {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                  {{ alert.danger(messages|join('<br>')) }}
+              {% endif %}
+          {% endwith %}
           {{ table.table(header, rows, "delete_row") }}
           {{ pagination.pagination(total_pages, active_page) }}
           {% if rows %}

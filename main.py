@@ -3,7 +3,7 @@ import sqlite3
 from math import ceil
 from urllib.parse import urlparse, urljoin
 from io import BytesIO
-from flask import Flask, render_template, request, g, send_file, redirect, url_for, make_response, jsonify, abort
+from flask import Flask, render_template, request, g, send_file, redirect, url_for, make_response, jsonify, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
@@ -54,7 +54,8 @@ def login():
             return redirect(next or url_for('index'))
         except (KeyError, ValueError) as e:
             app.logger.error('Invalid login: %s', e)
-            return render_template('login.html', message=f'Invalid username or password')
+            flash('Invalid username or password')
+            return render_template('login.html')
     else:
         return render_template('login.html')
 
@@ -104,10 +105,10 @@ def blood_pressure(key):
             return redirect(url_for('blood_pressure'))
         except ValueError as e:
             app.logger.error('Invalid form data: %s', e)
+            flash("Something went wrong when adding the new measurement. Please make sure all fields are set to valid values and try again.")
             return redirect(url_for(
                 'blood_pressure',
                 page=active_page,
-                message="""Something went wrong when adding the new measurement. Please make sure all fields are set to valid values and try again."""
             ))
     elif request.method == 'DELETE':
         measurement = BloodPressure.query.get(key)
@@ -123,13 +124,6 @@ def blood_pressure(key):
             app.logger.info('Could not find BloodPressure with id %s for deletion', key)
             return make_response("Entry not found", 404)
     else:
-        message = ''
-        if 'message' in request.args:
-            try:
-                message = str(request.args['message'])
-            except:
-                pass
-
         rows = BloodPressure.query.with_parent(current_user)[0:ROWS_PER_PAGE]
         return render_template(
             'blood_pressure.html',
@@ -137,7 +131,6 @@ def blood_pressure(key):
             rows=[(row.id, row.date.strftime('%A, %d. %B %Y'), row.systolic, row.diastolic) for row in rows],
             total_pages=total_pages,
             active_page=active_page,
-            message=message,
         )
 
 
