@@ -30,11 +30,11 @@
               <div class="modal-content">
                   <h4>Add Measurement</h4>
                   <div class="row">
-                      <div class="input-field col s6">
+                      <div class="input-field col s12 m6">
                           <input id="date" name="date" type="date" placeholder=" ">
                           <label>Date</label>
                       </div>
-                      <div class="input-field col s3">
+                      <div class="input-field col s6 m3">
                           <select id="time-hours" name="hour">
                               {% for hour in range(0, 25) %}
                               <option value="{{hour}}">{{hour}}</option>
@@ -42,7 +42,7 @@
                           </select>
                           <label>Hour</label>
                       </div>
-                      <div class="input-field col s3">
+                      <div class="input-field col s6 m3">
                           <select id="time-minutes" name="minute">
                               {% for minute in range(0, 61) %}
                               <option value="{{minute}}">{{'{:02d}'.format(minute)}}</option>

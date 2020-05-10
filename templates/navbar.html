@@ -7,9 +7,8 @@
                 <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
             </svg>
         </a>
-        <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-            {{ items() }}
+        <ul class="right">
+            <li><a class="hide-on-small-only">Signed in as <b>{{current_user.username}}</b></a></li>
             <li>
                 <a id='nav_dropdown_trigger' class='dropdown-trigger' href='#' data-target='nav_dropdown'>
                     <i class="material-icons">more_vert</i>
@@ -26,14 +25,12 @@
     <div class="hide-on-med-and-up" style="margin-top: 2rem"/>
 </nav>
 
-<ul class="sidenav" id="mobile-nav">
-    {{ items() }}
-</ul>
-
 <ul id='nav_dropdown' class='dropdown-content'>
-    {% if current_user is defined %}
-    <li><a disabled>Signed in as<br><b>{{current_user.username}}</b></a></li>
+    <li class="hide-on-med-and-up"><a>Signed in as<br><b>{{current_user.username}}</b></a></li>
+    <li class="hide-on-med-and-up divider" tabindex="-1"></li>
+    <li><a href="/blood_pressure">Blood Pressure</a></li>
     <li class="divider" tabindex="-1"></li>
+    {% if current_user is defined %}
     <li><a href="/logout">Logout</a></li>
     {% else %}
     <li><a href="/login">login</a></li>
@@ -42,17 +39,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        M.Sidenav.init(document.querySelectorAll('.sidenav'));
         M.Dropdown.init(document.getElementById('nav_dropdown_trigger'), {
             constrainWidth: false,
         });
     });
 </script>
-{%- endmacro %}
-
-{% macro items() -%}
-<li>
-    <a href="/blood_pressure">Blood Pressure</a>
-</li>
 {%- endmacro %}
 
