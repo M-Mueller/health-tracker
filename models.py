@@ -8,6 +8,13 @@ class User(db.Model):
 
     blood_pressures = db.relationship('BloodPressure', backref='user', lazy=True)
 
+    is_authenticated = True
+    is_active = True
+    is_anonymous = True
+
+    def get_id(self):
+        return self.id
+
     def __repr__(self):
         return f'<User {self.username}>'
 

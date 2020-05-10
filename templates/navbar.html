@@ -10,26 +10,44 @@
         <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             {{ items() }}
+            <li>
+                <a id='nav_dropdown_trigger' class='dropdown-trigger' href='#' data-target='nav_dropdown'>
+                    <i class="material-icons">more_vert</i>
+                </a>
+            </li>
         </ul>
     </div>
     {% if title %}
     <div class="nav-content">
-        <span class="nav-title">Blood Pressure</span>
+        <span class="nav-title">{{title}}</span>
         {{ caller() }}
     </div>
     {% endif %}
     <div class="hide-on-med-and-up" style="margin-top: 2rem"/>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelectorAll('.sidenav');
-            var instances = M.Sidenav.init(elems);
-        });
-    </script>
 </nav>
 
 <ul class="sidenav" id="mobile-nav">
     {{ items() }}
 </ul>
+
+<ul id='nav_dropdown' class='dropdown-content'>
+    {% if current_user is defined %}
+    <li><a disabled>Signed in as<br><b>{{current_user.username}}</b></a></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a href="/logout">Logout</a></li>
+    {% else %}
+    <li><a href="/login">login</a></li>
+    {% endif %}
+</ul>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+        M.Dropdown.init(document.getElementById('nav_dropdown_trigger'), {
+            constrainWidth: false,
+        });
+    });
+</script>
 {%- endmacro %}
 
 {% macro items() -%}
