@@ -15,7 +15,7 @@
       {% endcall %}
       <div class="container">
           {{ alert.danger(message) }}
-          {{ table.table(header, rows) }}
+          {{ table.table(header, rows, "delete_row") }}
           {{ pagination.pagination(total_pages, active_page) }}
           {% if rows %}
               {{ utils.button_download_csv("blood_pressure/csv") }}
@@ -67,6 +67,13 @@
           </form>
       </div>
       <script>
+          function delete_row(rowid) {
+              var request = new XMLHttpRequest();
+              request.addEventListener("load", () => { location.reload(); });
+              request.open("DELETE", "/blood_pressure/" + rowid);
+              request.send();
+          }
+
           document.addEventListener('DOMContentLoaded', function() {
               M.Range.init(document.querySelectorAll('.range'));
               M.FormSelect.init(document.querySelectorAll('select'));

@@ -5,12 +5,13 @@ The first column is expected to be the primary key used to delete the column.
 This first column is not considered by the header (i.e. header has one value
 less than the individual rows).
 #}
-{% macro table(header, rows) -%}
+{% macro table(header, rows, ondelete) -%}
 <table class="highlight">
   <thead>
       {% for column in header %}
       <th scope="col">{{column}}</th>
       {% endfor %}
+      <th scope="col" style="width: 4rem"></th>
   </thead>
   <tbody>
       {% for columns in rows %}
@@ -18,8 +19,32 @@ less than the individual rows).
           {% for column in columns[1:] %}
               <td>{{column}}</td>
           {% endfor %}
+          <td>
+              <button class="waves-effect waves-circle waves-red transparent btn-floating btn-flat btn-small" onclick="handleDelete({{columns[0]}})">
+                  <i class="material-icons red-text">clear</i>
+              </button>
+          </td>
       </tr>
       {% endfor %}
   </tbody>
+  <div id="confirm_modal" class="modal">
+      <div class="modal-content">
+          <p>Are you sure that you want to delete this entry?</p>
+          <div class="modal-footer">
+              <button type="button" class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+              <button id="confirm_modal_submit" type="button" class="modal-close waves-effect waves-light btn red">Delete</button>
+          </div>
+      </div>
+  </div>
 </table>
+<script>
+  function handleDelete(rowid) {
+      let modal = M.Modal.init(document.getElementById('confirm_modal'));
+      let submit = document.getElementById('confirm_modal_submit');
+      submit.onclick = (e) => {
+          {{ondelete}}(rowid);
+      };
+      modal.open();
+  }
+</script>
 {%- endmacro %}

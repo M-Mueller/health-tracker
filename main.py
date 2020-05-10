@@ -2,7 +2,7 @@ import datetime
 import sqlite3
 from math import ceil
 from io import BytesIO
-from flask import Flask, render_template, request, g, send_file, redirect, url_for
+from flask import Flask, render_template, request, g, send_file, redirect, url_for, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -21,8 +21,9 @@ def index():
     return redirect(url_for('blood_pressure'))
 
 
-@app.route('/blood_pressure', methods=['GET', 'POST'])
-def blood_pressure():
+@app.route('/blood_pressure', methods=['GET', 'POST'], defaults={'key': None})
+@app.route('/blood_pressure/<int:key>', methods=['DELETE'])
+def blood_pressure(key):
     ROWS_PER_PAGE = 10;
 
     total_pages = ceil(BloodPressure.query.count() / ROWS_PER_PAGE)
@@ -62,6 +63,16 @@ def blood_pressure():
                 page=active_page,
                 message="""Something went wrong when adding the new measurement. Please make sure all fields are set to valid values and try again."""
             ))
+    elif request.method == 'DELETE':
+        measurement = BloodPressure.query.get(key)
+        if measurement:
+            app.logger.info('Deleting BloodPressure %s', measurement)
+            db.session.delete(measurement)
+            db.session.commit()
+            return make_response(jsonify({}), 204)
+        else:
+            app.logger.info('Could not find BloodPressure with id %s for deletion', key)
+            return make_response("Entry not found", 404)
     else:
         message = ''
         if 'message' in request.args:
@@ -70,7 +81,7 @@ def blood_pressure():
             except:
                 pass
 
-        user = User.query.first_or_404()
+        user = User.query.first()  # TODO
         rows = BloodPressure.query.with_parent(user)[0:ROWS_PER_PAGE]
         return render_template(
             'blood_pressure.html',
@@ -80,6 +91,7 @@ def blood_pressure():
             active_page=active_page,
             message=message,
         )
+
 
 
 @app.route('/blood_pressure/csv')
