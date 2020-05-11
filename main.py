@@ -6,12 +6,13 @@ from io import BytesIO
 from flask import Flask, render_template, request, g, send_file, redirect, url_for, make_response, jsonify, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+import config
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = b'E\xbdv\xf0\xbd7\x0b\xf9\xce.\x94\xcerx5\xcd'
+app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
+app.secret_key = config.SECRET_KEY
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
