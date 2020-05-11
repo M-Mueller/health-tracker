@@ -8,7 +8,7 @@
 <html>
   {% include "header.html" %}
   <body>
-      {% call navbar.navbar('Blood Pressure') %}
+      {% call navbar.navbar(gettext('Blood Pressure')) %}
       <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal modal-trigger" href="#modal">
           <i class="material-icons">add</i>
       </a>
@@ -28,11 +28,11 @@
       <div id="modal" class="modal" onOpenEnd="resetDialogFields()">
           <form method="post">
               <div class="modal-content">
-                  <h4>Add Measurement</h4>
+                  <h4>{{ gettext("Add Measurement") }}</h4>
                   <div class="row">
                       <div class="input-field col s12 m6">
                           <input id="date" name="date" type="date" placeholder=" ">
-                          <label>Date</label>
+                          <label>{{ gettext("Date") }}</label>
                       </div>
                       <div class="input-field col s6 m3">
                           <select id="time-hours" name="hour">
@@ -40,7 +40,7 @@
                               <option value="{{hour}}">{{hour}}</option>
                               {% endfor %}
                           </select>
-                          <label>Hour</label>
+                          <label>{{ gettext("Hour") }}</label>
                       </div>
                       <div class="input-field col s6 m3">
                           <select id="time-minutes" name="minute">
@@ -48,25 +48,25 @@
                               <option value="{{minute}}">{{'{:02d}'.format(minute)}}</option>
                               {% endfor %}
                           </select>
-                          <label>Minute</label>
+                          <label>{{ gettext("Minute") }}</label>
                       </div>
                   </div>
                   <div class="row">
                       <p class="range-field col s12">
-                          <label>Systolic</label>
+                          <label>{{ gettext("Systolic") }}</label>
                           <input id="systolic" name="systolic" class="range" type="range" min="40" max="200" />
                       </p>
                   </div>
                   <div class="row">
                       <p class="range-field col s12">
-                          <label>Diastolic</label>
+                          <label>{{ gettext("Diastolic") }}</label>
                           <input id="diastolic" name="diastolic" class="range" type="range" min="20" max="120" />
                       </p>
                   </div>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="modal-close waves-effect waves-green btn-flat">Cancel</button>
-                  <button type="submit" class="modal-close waves-effect waves-light btn">Add</button>
+                  <button type="button" class="modal-close waves-effect waves-green btn-flat">{{ gettext("Cancel") }}</button>
+                  <button type="submit" class="modal-close waves-effect waves-light btn">{{ gettext("Add") }}</button>
               </div>
           </form>
       </div>

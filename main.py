@@ -6,6 +6,7 @@ from io import BytesIO
 from flask import Flask, render_template, request, g, send_file, redirect, url_for, make_response, jsonify, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_babel import Babel, gettext, format_datetime
 import config
 
 
@@ -17,6 +18,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+babel = Babel(app)
 
 
 from models import User, BloodPressure
@@ -25,6 +27,13 @@ from models import User, BloodPressure
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+@babel.localeselector
+def get_locale():
+    if current_user and not current_user.is_anonymous:
+        return current_user.locale
+    return request.accept_languages.best_match(['fr', 'en'])
 
 
 @app.route('/')
@@ -44,7 +53,7 @@ def login():
             if not user:
                 raise ValueError('Unknown user', username)
             if not user.password == password:
-                raise ValueError('Invalid password', password)
+                raise ValueError('Invalid password')
 
             login_user(user)
 
@@ -55,7 +64,7 @@ def login():
             return redirect(next or url_for('index'))
         except (KeyError, ValueError) as e:
             app.logger.error('Invalid login: %s', e)
-            flash('Invalid username or password')
+            flash(gettext('Invalid username or password'))
             return render_template('login.html')
     else:
         return render_template('login.html')
@@ -106,7 +115,7 @@ def blood_pressure(key):
             return redirect(url_for('blood_pressure'))
         except ValueError as e:
             app.logger.error('Invalid form data: %s', e)
-            flash("Something went wrong when adding the new measurement. Please make sure all fields are set to valid values and try again.")
+            flash(gettext("Something went wrong when adding the new measurement. Please make sure all fields are set to valid values and try again."))
             return redirect(url_for(
                 'blood_pressure',
                 page=active_page,
@@ -115,7 +124,7 @@ def blood_pressure(key):
         measurement = BloodPressure.query.get(key)
         if measurement:
             if measurement.user != current_user:
-                return make_response("You are not allowed to delete this entry", 403)
+                return make_response(gettext("You are not allowed to delete this entry"), 403)
 
             app.logger.info('Deleting BloodPressure %s', measurement)
             db.session.delete(measurement)
@@ -123,13 +132,13 @@ def blood_pressure(key):
             return make_response(jsonify({}), 204)
         else:
             app.logger.info('Could not find BloodPressure with id %s for deletion', key)
-            return make_response("Entry not found", 404)
+            return make_response(gettext("Entry not found"), 404)
     else:
         rows = BloodPressure.query.with_parent(current_user).order_by(BloodPressure.date.desc())[0:ROWS_PER_PAGE]
         return render_template(
             'blood_pressure.html',
-            header=('Date', 'SYS', 'DIA'),
-            rows=[(row.id, row.date.strftime('%A, %d. %B %Y'), row.systolic, row.diastolic) for row in rows],
+            header=(gettext('Date'), gettext('SYS'), gettext('DIA')),
+            rows=[(row.id, format_datetime(row.date), row.systolic, row.diastolic) for row in rows],
             total_pages=total_pages,
             active_page=active_page,
         )
