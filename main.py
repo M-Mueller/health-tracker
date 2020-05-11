@@ -100,12 +100,14 @@ def blood_pressure(key):
             minute = int(request.form['minute'])
             systolic = int(request.form['systolic'])
             diastolic = int(request.form['diastolic'])
+            pulse = int(request.form['pulse'])
 
             measurement = BloodPressure(
                 user=current_user,
                 date=datetime.datetime(date.year, date.month, date.day, hour, minute),
                 systolic=systolic,
                 diastolic=diastolic,
+                pulse=pulse,
             )
             db.session.add(measurement)
             db.session.commit()
@@ -137,8 +139,8 @@ def blood_pressure(key):
         rows = BloodPressure.query.with_parent(current_user).order_by(BloodPressure.date.desc())[0:ROWS_PER_PAGE]
         return render_template(
             'blood_pressure.html',
-            header=(gettext('Date'), gettext('SYS'), gettext('DIA')),
-            rows=[(row.id, format_datetime(row.date), row.systolic, row.diastolic) for row in rows],
+            header=(gettext('Date'), gettext('SYS') + ' (mmHg)', gettext('DIA') + ' (mmHg)', gettext('Pulse (bpm)')),
+            rows=[(row.id, format_datetime(row.date), row.systolic, row.diastolic, row.pulse) for row in rows],
             total_pages=total_pages,
             active_page=active_page,
         )
@@ -149,10 +151,10 @@ def blood_pressure(key):
 @login_required
 def blood_pressure_csv():
     rows = [
-        (row.date.isoformat(), row.systolic, row.diastolic)
+        (row.date.isoformat(), row.systolic, row.diastolic, row.pulse)
         for row in BloodPressure.query.filter_by(user=current_user).order_by(BloodPressure.date)
     ]
-    return send_csv('blood_pressure', ['date', 'systolic', 'diastolic'], rows)
+    return send_csv('blood_pressure', ['date', 'systolic', 'diastolic', 'pulse'], rows)
 
 
 def send_csv(name, headers, rows):

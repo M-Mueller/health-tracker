@@ -50,19 +50,18 @@
                           </select>
                           <label>{{ gettext("Minute") }}</label>
                       </div>
-                  </div>
-                  <div class="row">
                       <p class="range-field col s12">
                           <label>{{ gettext("Systolic") }}</label>
                           <input id="systolic" name="systolic" class="range" type="range" min="40" max="200" />
                       </p>
-                  </div>
-                  <div class="row">
                       <p class="range-field col s12">
                           <label>{{ gettext("Diastolic") }}</label>
                           <input id="diastolic" name="diastolic" class="range" type="range" min="20" max="120" />
                       </p>
-                  </div>
+                      <p class="range-field col s12">
+                          <label>{{ gettext("Pulse") }}</label>
+                          <input id="pulse" name="pulse" class="range" type="range" min="20" max="200" />
+                      </p>
               </div>
               <div class="modal-footer">
                   <button type="button" class="modal-close waves-effect waves-green btn-flat">{{ gettext("Cancel") }}</button>

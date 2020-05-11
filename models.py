@@ -26,6 +26,7 @@ class BloodPressure(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     systolic = db.Column(db.Integer, nullable=False)
     diastolic = db.Column(db.Integer, nullable=False)
+    pulse = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f'<BloodPressure {self.user.username} {self.date.isoformat()} {self.systolic}/{self.diastolic}>'
+        return f'<BloodPressure {self.user.username} {self.date.isoformat()} {self.systolic}/{self.diastolic} {self.pulse}>'

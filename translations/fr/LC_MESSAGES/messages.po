@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-11 13:56+0200\n"
+"POT-Creation-Date: 2020-05-11 14:16+0200\n"
 "PO-Revision-Date: 2020-05-11 12:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -22,31 +22,35 @@ msgstr ""
 msgid "Invalid username or password"
 msgstr "Nom d'utilisateur ou mot de passe invalide"
 
-#: main.py:118
+#: main.py:120
 msgid ""
 "Something went wrong when adding the new measurement. Please make sure "
 "all fields are set to valid values and try again."
 msgstr ""
 
-#: main.py:127
+#: main.py:129
 msgid "You are not allowed to delete this entry"
 msgstr ""
 
-#: main.py:135
+#: main.py:137
 msgid "Entry not found"
 msgstr "Entrée non trouvée"
 
-#: main.py:140 templates/blood_pressure.html:35
+#: main.py:142 templates/blood_pressure.html:35
 msgid "Date"
 msgstr "Date"
 
-#: main.py:140
+#: main.py:142
 msgid "SYS"
 msgstr "SYS"
 
-#: main.py:140
+#: main.py:142
 msgid "DIA"
 msgstr "DIA"
+
+#: main.py:142
+msgid "Pulse (bpm)"
+msgstr "Poulse (bpm)"
 
 #: templates/blood_pressure.html:11 templates/navbar.html:35
 msgid "Blood Pressure"
@@ -64,19 +68,23 @@ msgstr "Heure"
 msgid "Minute"
 msgstr "Minute"
 
-#: templates/blood_pressure.html:56
+#: templates/blood_pressure.html:54
 msgid "Systolic"
 msgstr "Systolique"
 
-#: templates/blood_pressure.html:62
+#: templates/blood_pressure.html:58
 msgid "Diastolic"
 msgstr "Diastolique"
 
-#: templates/blood_pressure.html:68
+#: templates/blood_pressure.html:62
+msgid "Pulse"
+msgstr "Poulse"
+
+#: templates/blood_pressure.html:67
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/blood_pressure.html:69
+#: templates/blood_pressure.html:68
 msgid "Add"
 msgstr "Ajouter"
 
