@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-11 14:16+0200\n"
+"POT-Creation-Date: 2020-05-12 13:25+0200\n"
 "PO-Revision-Date: 2020-05-11 12:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -27,10 +27,13 @@ msgid ""
 "Something went wrong when adding the new measurement. Please make sure "
 "all fields are set to valid values and try again."
 msgstr ""
+"Une erreur est survenue durant l'ajout d'une nouvelle mesure. Vérifiez "
+"que toutes les valeurs dans les champs aient des valeurs valides et "
+"réessayez."
 
 #: main.py:129
 msgid "You are not allowed to delete this entry"
-msgstr ""
+msgstr "Vous n'êtes pas autorisés à effacer cette entrée"
 
 #: main.py:137
 msgid "Entry not found"
@@ -50,7 +53,7 @@ msgstr "DIA"
 
 #: main.py:142
 msgid "Pulse (bpm)"
-msgstr "Poulse (bpm)"
+msgstr "Pouls (bpm)"
 
 #: templates/blood_pressure.html:11 templates/navbar.html:35
 msgid "Blood Pressure"
@@ -78,9 +81,9 @@ msgstr "Diastolique"
 
 #: templates/blood_pressure.html:62
 msgid "Pulse"
-msgstr "Poulse"
+msgstr "Pouls"
 
-#: templates/blood_pressure.html:67
+#: templates/blood_pressure.html:67 templates/table.html:34
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -90,7 +93,7 @@ msgstr "Ajouter"
 
 #: templates/header.html:4
 msgid "Health Tracker"
-msgstr "Traqueur de Santé"
+msgstr "Moniteur de Santé"
 
 #: templates/login.html:22
 msgid "Username"
@@ -98,7 +101,7 @@ msgstr "Nom d'utilisateur"
 
 #: templates/login.html:26
 msgid "Password"
-msgstr "mot de passe"
+msgstr "Mot de passe"
 
 #: templates/login.html:28 templates/navbar.html:40
 msgid "Login"
@@ -107,11 +110,19 @@ msgstr "Se connecter"
 #: templates/navbar.html:12 templates/navbar.html:32
 #, python-format
 msgid "Signed in as <b>%(username)s</b>"
-msgstr "Connecté en <b>%(username)s</b>"
+msgstr "<b>%(username)s</b> est connecté"
 
 #: templates/navbar.html:38
 msgid "Logout"
 msgstr "Se déconnecter"
+
+#: templates/table.html:32
+msgid "Are you sure that you want to delete this entry?"
+msgstr "Est-ce que vous êtes sûres de vouloir effacer cette entrée?"
+
+#: templates/table.html:35
+msgid "Delete"
+msgstr "Effacer"
 
 #: templates/utils.html:3
 msgid "Download CSV"
