@@ -6,7 +6,7 @@ from io import BytesIO
 from flask import Flask, render_template, request, g, send_file, redirect, url_for, make_response, jsonify, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_babel import Babel, gettext, format_datetime
+from flask_babel import Babel, gettext, format_datetime, format_date
 import config
 
 
@@ -151,13 +151,15 @@ def blood_pressure(key):
 @login_required
 def blood_pressure_csv():
     rows = [
-        (row.date.isoformat(), row.systolic, row.diastolic, row.pulse)
+        (row.date.date().isoformat(), row.date.time().isoformat(), row.systolic, row.diastolic, row.pulse)
         for row in BloodPressure.query.filter_by(user=current_user).order_by(BloodPressure.date)
     ]
-    return send_csv('blood_pressure', ['date', 'systolic', 'diastolic', 'pulse'], rows)
+    today = format_date(datetime.date.today())
+    filename = f"{gettext('Blood Pressure')} - {current_user.username} - {today}.csv"
+    return send_csv(filename, ['date', 'time', 'systolic', 'diastolic', 'pulse'], rows)
 
 
-def send_csv(name, headers, rows):
+def send_csv(filename, headers, rows):
     csv = BytesIO()
     for row in [headers] + rows:
         line = ''
@@ -166,7 +168,7 @@ def send_csv(name, headers, rows):
         line = line + '\n'
         csv.write(line.encode('utf-8'))
     csv.seek(0)
-    return send_file(csv, mimetype='text/csv', as_attachment=True, attachment_filename=name + '.csv')
+    return send_file(csv, mimetype='text/csv', as_attachment=True, attachment_filename=filename)
 
 
 def is_safe_url(target):
