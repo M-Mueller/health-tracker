@@ -83,7 +83,7 @@ def logout():
 def blood_pressure(key):
     ROWS_PER_PAGE = 10;
 
-    total_pages = ceil(BloodPressure.query.count() / ROWS_PER_PAGE)
+    total_pages = ceil(BloodPressure.query.with_parent(current_user).count() / ROWS_PER_PAGE)
 
     active_page = 1
     if 'page' in request.args:
