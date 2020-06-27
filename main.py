@@ -136,7 +136,13 @@ def blood_pressure(key):
             app.logger.info('Could not find BloodPressure with id %s for deletion', key)
             return make_response(gettext("Entry not found"), 404)
     else:
-        rows = BloodPressure.query.with_parent(current_user).order_by(BloodPressure.date.desc())[0:ROWS_PER_PAGE]
+        rows = BloodPressure.query.with_parent(current_user).order_by(BloodPressure.date.desc())
+
+        first_entry = (active_page - 1) * ROWS_PER_PAGE
+        last_entry = active_page * ROWS_PER_PAGE
+        print(first_entry, last_entry)
+        rows = rows[first_entry:last_entry]
+
         return render_template(
             'blood_pressure.html',
             header=(gettext('Date'), gettext('SYS') + ' (mmHg)', gettext('DIA') + ' (mmHg)', gettext('Pulse (bpm)')),
